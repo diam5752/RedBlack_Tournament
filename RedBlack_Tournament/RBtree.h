@@ -30,10 +30,11 @@ enum color { RED, BLACK };
 typedef struct rbtree_node
 {
 	enum color color;  // xrwma node (kokkino i mavro)
-	int key;
-	int value;
-	int yvalue;
+	float x;
+	float x_dummy;
+	float y;
 	bool maximal;
+	float is_dummy;
 	vector<rbtree_node> path;
 	rbtree_node *left, *right, *parent;
 }*node;
@@ -47,11 +48,11 @@ typedef struct rbtree_t
 class RBTree
 {
 public:
-	typedef int(*compare_func)(int left, int right);
+	typedef float(*compare_func)(float left, float right);
 	rbtree rbtree_create();
-	int rbtree_lookup(rbtree t, int, compare_func compare);
-	void rbtree_insert(rbtree t, int, int, int, compare_func compare);
-	void rbtree_delete(rbtree t, int, compare_func compare);
+	float rbtree_lookup(rbtree t, float, compare_func compare);
+	void rbtree_insert(rbtree t, float, float, float, compare_func compare);
+	void rbtree_delete(rbtree t, float, compare_func compare);
 	node grandparent(node n);
 	node sibling(node n);
 	node uncle(node n);
@@ -62,8 +63,8 @@ public:
 	void verify_property_4(node root);
 	void verify_property_5(node root);
 	void verify_property_5_helper(node n, int, int*);
-	node new_node(int key, int, int, color, node, node);
-	node lookup_node(rbtree t, int, compare_func compare);
+	node new_node(float x, float, float, color, node, node);
+	node lookup_node(rbtree t, float, compare_func compare);
 	void rotate_left(rbtree t, node n);
 	void rotate_right(rbtree t, node n);
 	void replace_node(rbtree t, node oldn, node newn);
@@ -83,9 +84,9 @@ public:
 	//
 	void tournament(rbtree &t);
 	void tournament_helper(node& n);
-	node* dynamic_tournament(rbtree&t, int, bool first); // vlepe katw eksigisi
+	node* dynamic_tournament(rbtree&t, float, bool first); // vlepe katw eksigisi
 	void clear_to_parent(rbtree &t, node n, bool first);   // first an einai to prwto pou mpainei stin anazitisi, wste
 														   // na apofigoume na paroume 2 fores to stoixeio, mia pros ta panw, mia pros ta katw
 	node* clear_to_leaf(rbtree &t, node n);
-	void re_tournament(rbtree &t, node &p_leaf, int new_y);
+	void re_tournament(rbtree &t, node &p_leaf, float new_y);
 };

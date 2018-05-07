@@ -19,7 +19,7 @@ void RBtree::insert(int x) {
 
 RBtree *node = new RBtree;
 node->color = "r";
-node->key = x;
+node->x = x;
 
 if (root==NULL) {  // case 0
 node->color = "b";
@@ -160,18 +160,18 @@ rbtree RBTree::rbtree_create()
 /*
 * Creating New Node of Reb Black Tree
 */
-node RBTree::new_node(int k, int v, int yvalue, color n_color, node left, node right)
+node RBTree::new_node(float k, float v, float y, color n_color, node left, node right)
 {
 	node result = new rbtree_node;
-	result->key = k;
-	cout << "----------------------------------------------->  result -> key = " << result->key << endl;
-	result->value = v;
-	cout << "----------------------------------------------->  result -> value = " << result->value << endl;
+	result->x = k;
+	cout << "----------------------------------------------->  result -> x = " << result->x << endl;
+	result->x_dummy = v;
+	cout << "----------------------------------------------->  result -> x_dummy = " << result->x_dummy << endl;
 	result->color = n_color;
 	result->left = left;
 	result->right = right;
-	result->yvalue = yvalue;
-	cout << "----------------------------------------------->  result -> yvalue = " << result->yvalue << endl;
+	result->y = y;
+	cout << "----------------------------------------------->  result -> y = " << result->y << endl;
 	if (left != NULL)
 		left->parent = result;
 	if (right != NULL)
@@ -182,12 +182,12 @@ node RBTree::new_node(int k, int v, int yvalue, color n_color, node left, node r
 /*
 * Look Up through Node
 */
-node RBTree::lookup_node(rbtree t, int key, compare_func compare)
+node RBTree::lookup_node(rbtree t, float x, compare_func compare)
 {
 	node n = t->root;
 	while (n != NULL)
 	{
-		int comp_result = compare(key, n->key);
+		float comp_result = compare(x, n->x);
 		if (comp_result == 0)
 		{
 			return n;
@@ -207,10 +207,10 @@ node RBTree::lookup_node(rbtree t, int key, compare_func compare)
 /*
 * RbTree Look Up
 */
-int RBTree::rbtree_lookup(rbtree t, int key, compare_func compare)
+float RBTree::rbtree_lookup(rbtree t, float x, compare_func compare)
 {
-	node n = lookup_node(t, key, compare);
-	return n == NULL ? NULL : n->value;
+	node n = lookup_node(t, x, compare);
+	return n == NULL ? NULL : n->x_dummy;
 }
 
 /*
@@ -267,9 +267,9 @@ void RBTree::replace_node(rbtree t, node oldn, node newn)
 /*
 * Insert node into RBTree
 */
-void RBTree::rbtree_insert(rbtree t, int key, int value, int yvalue, compare_func compare)
+void RBTree::rbtree_insert(rbtree t, float x, float x_dummy, float y, compare_func compare)
 {
-	node inserted_node = new_node(key, value, yvalue, RED, NULL, NULL);
+	node inserted_node = new_node(x, x_dummy, y, RED, NULL, NULL);
 	if (t->root == NULL)
 	{
 		t->root = inserted_node;
@@ -279,10 +279,10 @@ void RBTree::rbtree_insert(rbtree t, int key, int value, int yvalue, compare_fun
 		node n = t->root;
 		while (1)
 		{
-			int comp_result = compare(key, n->key);
+			float comp_result = compare(x, n->x);
 			if (comp_result == 0)
 			{
-				n->value = value;
+				n->x_dummy = x_dummy;
 				return;
 			}
 			else if (comp_result < 0)
@@ -398,17 +398,17 @@ void RBTree::insert_case5(rbtree t, node n)
 /*
 * Delete Node from RBTree
 */
-void RBTree::rbtree_delete(rbtree t, int key, compare_func compare)
+void RBTree::rbtree_delete(rbtree t, float x, compare_func compare)
 {
 	node child;
-	node n = lookup_node(t, key, compare);
+	node n = lookup_node(t, x, compare);
 	if (n == NULL)
 		return;
 	if (n->left != NULL && n->right != NULL)
 	{
 		node pred = maximum_node(n->left);
-		n->key = pred->key;
-		n->value = pred->value;
+		n->x = pred->x;
+		n->x_dummy = pred->x_dummy;
 		n = pred;
 	}
 	assert(n->left == NULL || n->right == NULL);
@@ -542,9 +542,9 @@ void RBTree::delete_case6(rbtree t, node n)
 
 
 void RBTree::tournament(rbtree& t) {
-	/*cout << "root = " << int(t->root->key) << endl;
-	cout << "left = " << int(t->root->left->key) << endl;
-	cout << "right = " << int(t->root->right->key) << endl;*/
+	/*cout << "root = " << int(t->root->x) << endl;
+	cout << "left = " << int(t->root->left->x) << endl;
+	cout << "right = " << int(t->root->right->x) << endl;*/
 	cout << " =========================== TOURNAMENT =========================== " << endl;
 	tournament_helper(t->root);
 	cout << " =================================================================== " << endl;
@@ -566,16 +566,16 @@ void RBTree::tournament_helper(node& n) {
 	{
 		tournament_helper(n->left);
 	}
-	cout << " n = " << (int)n->key << "   y = " << (int)n->yvalue;
-	//cout << "                                                                       edw  me n =  "<< (int)n->key <<"   y = " << (int)n->yvalue<< endl;
+	cout << " n = " << n->x << "   y = " << n->y;
+	//cout << "                                                                       edw  me n =  "<< (int)n->x <<"   y = " << (int)n->y<< endl;
 	if (n->parent == NULL) {
 		cout << "   case 0 " << endl;
 
-		if (n->left != NULL && (n->yvalue == n->left->yvalue)) {
+		if (n->left != NULL && (n->y == n->left->y)) {
 			n->path.push_back(*n);
 			n->path.insert(n->path.end(), n->left->path.begin(), n->left->path.end());
 		}
-		else if (n->right != NULL && n->yvalue == n->right->yvalue) {
+		else if (n->right != NULL && n->y == n->right->y) {
 			n->path.push_back(*n);
 			n->path.insert(n->path.end(), n->right->path.begin(), n->right->path.end());
 		}
@@ -587,7 +587,7 @@ void RBTree::tournament_helper(node& n) {
 	}
 
 	if (n->left == NULL && n->right == NULL && n->parent->left == NULL) {
-		n->parent->yvalue = n->yvalue;
+		n->parent->y = n->y;
 		cout << "   case 1 " << endl;
 
 		n->path.push_back(*n);
@@ -596,19 +596,25 @@ void RBTree::tournament_helper(node& n) {
 	}
 	else if (n->left == NULL && n->right == NULL && n->parent->right == NULL) {
 
-		n->parent->yvalue = n->yvalue;
+		n->parent->y = n->y;
 		cout << "   case 2 " << endl;
 		return;
 	}
 
-	if (n->yvalue >= n->parent->right->yvalue &&n->parent != NULL) {
-		n->parent->yvalue = n->yvalue;
+	if (n->y >= n->parent->right->y && n->parent != NULL) {
+		n->parent->y = n->y;
 
-		if (n->left != NULL && (n->yvalue == n->left->yvalue)) {
+		if ( n->parent->is_dummy == 1 ) {
+			n->parent->x_dummy = n->x;
+			cout << "      parent dummy ->  " << n->x << "   ";
+		}
+
+
+		if (n->left != NULL && (n->y == n->left->y)) {
 			n->path.push_back(*n);
 			n->path.insert(n->path.end(), n->left->path.begin(), n->left->path.end());
 		}
-		else if (n->right != NULL && n->yvalue == n->right->yvalue) {
+		else if (n->right != NULL && n->y == n->right->y) {
 			n->path.push_back(*n);
 			n->path.insert(n->path.end(), n->right->path.begin(), n->right->path.end());
 		}
@@ -619,13 +625,13 @@ void RBTree::tournament_helper(node& n) {
 		cout << "   case 3 " << endl;
 	}
 	else {
-		n->parent->yvalue = n->parent->right->yvalue;
+		n->parent->y = n->parent->right->y;
 
-		if (n->left != NULL && (n->yvalue == n->left->yvalue)) {
+		if (n->left != NULL && (n->y == n->left->y)) {
 			n->path.push_back(*n);
 			n->path.insert(n->path.end(), n->left->path.begin(), n->left->path.end());
 		}
-		else if (n->right != NULL && n->yvalue == n->right->yvalue) {
+		else if (n->right != NULL && n->y == n->right->y) {
 			n->path.push_back(*n);
 			n->path.insert(n->path.end(), n->right->path.begin(), n->right->path.end());
 		}
@@ -636,13 +642,14 @@ void RBTree::tournament_helper(node& n) {
 		cout << "   case 4 " << endl;
 	}
 }
+
 /*
 * Compare two nodes
 */
-int compare_int(int leftp, int rightp)
+float compare_int(float leftp, float rightp)
 {
-	int left = (int)leftp;
-	int right = (int)rightp;
+	float left = leftp;
+	float right = rightp;
 	if (left < right)
 		return -1;
 	else if (left > right)
@@ -654,15 +661,15 @@ int compare_int(int leftp, int rightp)
 	}
 }
 
-node* RBTree::dynamic_tournament(rbtree&t, int key, bool first) {
+node* RBTree::dynamic_tournament(rbtree&t, float x, bool first) {
 	node* p_leaf;
 	node * ancestor = NULL;
 	RBTree rbt;
-	node n = rbt.lookup_node(t, key, compare_int);
+	node n = rbt.lookup_node(t, x, compare_int);
 	//node *pn = &n;
-	//cout << "found node : " << (int)(*pn)->key << "," << (int)(*pn)->yvalue << endl;
-	//void *y = (*pn)->yvalue;
-	cout << "found node : " << (int)n->key << "," << (int)n->yvalue << endl;
+	//cout << "found node : " << (int)(*pn)->x << "," << (int)(*pn)->y << endl;
+	//void *y = (*pn)->y;
+	cout << "found node : " << (int)n->x << "," << (int)n->y << endl;
 
 	clear_to_parent(t, n, first);
 	p_leaf = clear_to_leaf(t, n);
@@ -672,33 +679,33 @@ node* RBTree::dynamic_tournament(rbtree&t, int key, bool first) {
 //katharizei apo tin korifi tis trixas mexri to node pou psaxnoume
 void RBTree::clear_to_parent(rbtree &t, node n, bool first) {
 
-	if (n->parent != NULL && n->parent->yvalue == n->yvalue) {
-		cout << " current n = " << (int)n->key << endl;
+	if (n->parent != NULL && n->parent->y == n->y) {
+		cout << " current n = " << (int)n->x << endl;
 		if (first != 1) {
-			n->yvalue = CLEAR_Y;
+			n->y = CLEAR_Y;
 		}
 		clear_to_parent(t, n->parent, 0);
-		cout << " parent is : " << (int)n->parent->key << endl;
-		n->parent->yvalue = CLEAR_Y;
+		cout << " parent is : " << (int)n->parent->x << endl;
+		n->parent->y = CLEAR_Y;
 	}
 }
 
 node* RBTree::clear_to_leaf(rbtree &t, node n) {
 
-	if (n->left != NULL && n->left->yvalue == n->yvalue) {
-		cout << " current n = " << (int)n->key << endl;
-		n->yvalue = CLEAR_Y;
+	if (n->left != NULL && n->left->y == n->y) {
+		cout << " current n = " << (int)n->x << endl;
+		n->y = CLEAR_Y;
 		clear_to_leaf(t, n->left);
-		n->left->yvalue = n->yvalue;
-		cout << " left is : " << (int)n->left->key << "   with y = " << (int)n->left->yvalue << endl;
+		n->left->y = n->y;
+		cout << " left is : " << (int)n->left->x << "   with y = " << (int)n->left->y << endl;
 		return &(n->left);
 	}
-	else if (n->right != NULL && n->right->yvalue == n->yvalue) {
-		cout << " current n = " << (int)n->key << endl;
-		n->yvalue = CLEAR_Y;
+	else if (n->right != NULL && n->right->y == n->y) {
+		cout << " current n = " << (int)n->x << endl;
+		n->y = CLEAR_Y;
 		clear_to_leaf(t, n->right);
-		n->right->yvalue = n->yvalue;
-		cout << " right is : " << (int)n->right->key << "   with y = " << (int)n->right->yvalue << endl;
+		n->right->y = n->y;
+		cout << " right is : " << (int)n->right->x << "   with y = " << (int)n->right->y << endl;
 		return &(n->right);
 	}
 
@@ -709,38 +716,38 @@ node* RBTree::clear_to_leaf(rbtree &t, node n) {
 
 }
 
-void RBTree::re_tournament(rbtree &t, node &p_leaf, int new_y) {
-	cout << " \n ========================================== \n returned : " << (int)(p_leaf)->key << endl;
+void RBTree::re_tournament(rbtree &t, node &p_leaf, float new_y) {
+	cout << " \n ========================================== \n returned : " << (int)(p_leaf)->x << endl;
 
-	while ((p_leaf)->yvalue == CLEAR_Y) {
+	while ((p_leaf)->y == CLEAR_Y) {
 
 		if ((p_leaf)->left == NULL && (p_leaf)->right == NULL) {  // prwti periptwsi
-			(p_leaf)->yvalue = new_y;
-			cout << "first value =  " << (int)(p_leaf)->yvalue << endl;
+			(p_leaf)->y = new_y;
+			cout << "first x_dummy =  " << (int)(p_leaf)->y << endl;
 		}
 		else if ((p_leaf)->left != NULL && (p_leaf)->right == NULL) {
-			(p_leaf)->yvalue = (p_leaf)->left->yvalue;
-			cout << "left value =  " << (p_leaf)->left << endl;    // (int) an dn doulevei
+			(p_leaf)->y = (p_leaf)->left->y;
+			cout << "left x_dummy =  " << (p_leaf)->left << endl;    // (int) an dn doulevei
 		}
 		else if ((p_leaf)->left == NULL && (p_leaf)->right != NULL) {
-			(p_leaf)->yvalue = (p_leaf)->right->yvalue;
-			cout << "right value =  " << (int)(p_leaf)->right->yvalue << endl;
+			(p_leaf)->y = (p_leaf)->right->y;
+			cout << "right x_dummy =  " << (int)(p_leaf)->right->y << endl;
 		}
 		else {
-			if ((int)(p_leaf)->left->yvalue >= (int)(p_leaf)->right->yvalue) {
+			if ((int)(p_leaf)->left->y >= (int)(p_leaf)->right->y) {
 
-				(p_leaf)->yvalue = (p_leaf)->left->yvalue;
+				(p_leaf)->y = (p_leaf)->left->y;
 			}
 			else {
-				(p_leaf)->yvalue = (p_leaf)->right->yvalue;
+				(p_leaf)->y = (p_leaf)->right->y;
 			}
 
 		}
 		if ((p_leaf)->parent != NULL) {
-			cout << " p_leaf  parent = " << (int)(p_leaf)->parent->key << endl;
+			cout << " p_leaf  parent = " << (int)(p_leaf)->parent->x << endl;
 			(p_leaf) = (p_leaf)->parent;
-			cout << " p_leaf = " << (int)(p_leaf)->key << endl;
-			cout << " p_leaf.left = " << (int)(p_leaf)->left->key << endl;
+			cout << " p_leaf = " << (int)(p_leaf)->x << endl;
+			cout << " p_leaf.left = " << (int)(p_leaf)->left->x << endl;
 		}
 	}
 
@@ -754,7 +761,7 @@ void RBTree::re_tournament(rbtree &t, node &p_leaf, int new_y) {
 void print_tree_helper(node n, int indent)
 {
 	for (std::vector<rbtree_node>::iterator it = (n->path).begin(); it != (n->path).end(); ++it) {
-		//	cout << "for n = " << (int)n->key << "  path = " << (int)(*it).key << endl;
+		//	cout << "for n = " << (int)n->x << "  path = " << (int)(*it).x << endl;
 	}
 
 	int i;
@@ -771,11 +778,11 @@ void print_tree_helper(node n, int indent)
 		fputs(" ", stdout);
 	if (n->color == BLACK)  
 	{
-		cout << (int)n->key << "                                              ( " << (int)n->key << " , " << (int)n->yvalue << " )" << endl;
+		cout << n->x << "                                              ( " << n->x << " , " << n->y << " )" << endl;
 	}
 	else
 	{
-		cout << "<" << (int)n->key << ">" << "                                              ( " << (int)n->key << " , " << (int)n->yvalue << " )" << endl;
+		cout << "<" << n->x << ">" << "                                              ( " << n->x << " , " << n->y << " )" << endl;
 	}
 	if (n->left != NULL)
 	{
@@ -796,7 +803,7 @@ void print_tree(rbtree& t)
 
 void find_maxima(vector<node*> &v) {  // vriskw ta maxima apo array pou pairnei ws oris,a
 
-	cout << " item with biggest x : " << (*(v.front()))->key << endl;
+	cout << " item with biggest x : " << (*(v.front()))->x << endl;
 
 	vector<node*> v_max; // tha krataei ta maximal simeia
 
@@ -805,13 +812,13 @@ void find_maxima(vector<node*> &v) {  // vriskw ta maxima apo array pou pairnei 
 	for (int i = 0; i < v_size; i++) {
 		int max_desc = 0; // an o ginei iso me ton arithmo twn komvwn, tote einai maximal to node pou koitame
 		cout << "--------------------------------------------------" << endl;
-		cout << "v[" << i << "]  = " << (*v[i])->key << endl; // ektipwsi pou mas voithaei na tsekaroume an einai swsta ta apotelesmata
+		cout << "v[" << i << "]  = " << (*v[i])->x << endl; // ektipwsi pou mas voithaei na tsekaroume an einai swsta ta apotelesmata
 
 		for (int j = 0; j < v_size; j++) {  //ksekinaw ti diadikasia elegxou gia maxima. Arxika auti einai i kaki veltiwsi , kai tha 
 											// veltiwthei me xrisi partial queue with attrition
 
-			cout << " x = " << (*v[j])->key << "    y = " << (*v[j])->yvalue << endl;
-			if (((*v[i])->key >= (*v[j])->key) || (((*v[i])->yvalue) >= (*v[j])->yvalue)) {
+			cout << " x = " << (*v[j])->x << "    y = " << (*v[j])->y << endl;
+			if (((*v[i])->x >= (*v[j])->x) || (((*v[i])->y) >= (*v[j])->y)) {
 				max_desc++;
 			}
 			else { max_desc = 0; }
@@ -827,7 +834,7 @@ void find_maxima(vector<node*> &v) {  // vriskw ta maxima apo array pou pairnei 
 	cout << "**************************************************************" << endl;
 	for (std::vector<node *>::iterator it = v_max.begin(); it != v_max.end(); ++it)
 	{
-		std::cout << ' ' << (*(*it))->key << " with n->maximal value = " << (*(*it))->maximal << endl;  // ektipwnoume ta maxima	
+		std::cout << ' ' << (*(*it))->x << " with n->maximal x_dummy = " << (*(*it))->maximal << endl;  // ektipwnoume ta maxima	
 																										// gia na doume an einai swsta ta apotelesmata
 	}
 }
@@ -836,15 +843,15 @@ void Rmax(rbtree &t) {
 
 	cout << " -------------------  IN Rmax ------------------- " << endl;
 
-	cout << " root = " << (int)t->root->key << endl;
+	cout << " root = " << (int)t->root->x << endl;
 	node* p_leaf = &(t->root);  // pointer pou deixnei stin thesi mnimis tis korifis  tou dentrou. Sto telos tha deixnei sto leaf apo to
 								// opoio pire to y i riza tou dentrou
 	vector<node*> v;  // vector pou tha krataei ta Rmax . Ta deksia kremamena diladi, apo to winning path
 
-	while ((*p_leaf)->yvalue == t->root->yvalue) {   // arxika mono gia to paradeigma pou exw. Thelei genikopoiisi
-		cout << "p_leaf = " << (int)(*p_leaf)->key << endl;
+	while ((*p_leaf)->y == t->root->y) {   // arxika mono gia to paradeigma pou exw. Thelei genikopoiisi
+		cout << "p_leaf = " << (int)(*p_leaf)->x << endl;
 
-		if ((*p_leaf)->right != NULL && (*p_leaf)->right->yvalue != t->root->yvalue) {
+		if ((*p_leaf)->right != NULL && (*p_leaf)->right->y != t->root->y) {
 			v.push_back(&(*p_leaf)->right);
 		}
 
@@ -857,16 +864,16 @@ void Rmax(rbtree &t) {
 	}
 	for (std::vector<node *>::iterator it = v.begin(); it != v.end(); ++it)
 	{
-		std::cout << ' ' << (*(*it))->key;  // ektipwnw ta dekisa canditates, ta Rmax tou winning path
+		std::cout << ' ' << (*(*it))->x;  // ektipwnw ta dekisa canditates, ta Rmax tou winning path
 	}
 	std::cout << endl;
 
-	cout << " LEAF OF ROOT IS ---> " << (int)(*p_leaf)->key << endl;  // tsekarw an o pointer eftase ekei pou ithela, diladi sto leaf
+	cout << " LEAF OF ROOT IS ---> " << (int)(*p_leaf)->x << endl;  // tsekarw an o pointer eftase ekei pou ithela, diladi sto leaf
 																	  // apo opou pire i riza to y tis. O deiktis menei ekei , kai tha mas xreiastei
 	find_maxima(v);  //stelnw stin sinartisi ton vector me ta Rmax, kai apo auta vriskw poia einai maxima.
 }
 
-int compare_int(int leftp, int rightp);
+float compare_int(float leftp, float rightp);
 
 
 
