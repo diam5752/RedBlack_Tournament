@@ -551,7 +551,6 @@ void RBTree::tournament(rbtree& t) {
 }
 
 void RBTree::tournament_helper(node& n) {
-	int i;
 
 	if (n == NULL)
 	{
@@ -703,6 +702,10 @@ node* RBTree::clear_to_leaf(rbtree &t, node n) {
 		return &(n->right);
 	}
 
+	else {
+		cout << "error happened ... returning 0 " << endl;
+		return 0;
+	}
 
 }
 
@@ -717,7 +720,7 @@ void RBTree::re_tournament(rbtree &t, node &p_leaf, int new_y) {
 		}
 		else if ((p_leaf)->left != NULL && (p_leaf)->right == NULL) {
 			(p_leaf)->yvalue = (p_leaf)->left->yvalue;
-			cout << "left value =  " << (int)(p_leaf)->left << endl;
+			cout << "left value =  " << (p_leaf)->left << endl;    // (int) an dn doulevei
 		}
 		else if ((p_leaf)->left == NULL && (p_leaf)->right != NULL) {
 			(p_leaf)->yvalue = (p_leaf)->right->yvalue;
@@ -766,7 +769,7 @@ void print_tree_helper(node n, int indent)
 	}
 	for (i = 0; i < indent; i++)
 		fputs(" ", stdout);
-	if (n->color == BLACK)
+	if (n->color == BLACK)  
 	{
 		cout << (int)n->key << "                                              ( " << (int)n->key << " , " << (int)n->yvalue << " )" << endl;
 	}
@@ -797,7 +800,7 @@ void find_maxima(vector<node*> &v) {  // vriskw ta maxima apo array pou pairnei 
 
 	vector<node*> v_max; // tha krataei ta maximal simeia
 
-	int v_size = v.size();
+	int v_size = (int)v.size();
 	cout << "**************************************************************" << endl;
 	for (int i = 0; i < v_size; i++) {
 		int max_desc = 0; // an o ginei iso me ton arithmo twn komvwn, tote einai maximal to node pou koitame
