@@ -160,7 +160,7 @@ rbtree RBTree::rbtree_create()
 /*
 * Creating New Node of Reb Black Tree
 */
-node RBTree::new_node(int k, int v, int yvalue, color n_color, node left, node right)
+node RBTree::new_node(float k, float v, float yvalue, color n_color, node left, node right)
 {
 	node result = new rbtree_node;
 	result->key = k;
@@ -182,7 +182,7 @@ node RBTree::new_node(int k, int v, int yvalue, color n_color, node left, node r
 /*
 * Look Up through Node
 */
-node RBTree::lookup_node(rbtree t, int key, compare_func compare)
+node RBTree::lookup_node(rbtree t, float key, compare_func compare)
 {
 	node n = t->root;
 	while (n != NULL)
@@ -207,7 +207,7 @@ node RBTree::lookup_node(rbtree t, int key, compare_func compare)
 /*
 * RbTree Look Up
 */
-int RBTree::rbtree_lookup(rbtree t, int key, compare_func compare)
+int RBTree::rbtree_lookup(rbtree t, float key, compare_func compare)
 {
 	node n = lookup_node(t, key, compare);
 	return n == NULL ? NULL : n->value;
@@ -267,7 +267,7 @@ void RBTree::replace_node(rbtree t, node oldn, node newn)
 /*
 * Insert node into RBTree
 */
-void RBTree::rbtree_insert(rbtree t, int key, int value, int yvalue, compare_func compare)
+void RBTree::rbtree_insert(rbtree t, float key, float value, float yvalue, compare_func compare)
 {
 	node inserted_node = new_node(key, value, yvalue, RED, NULL, NULL);
 	if (t->root == NULL)
@@ -398,7 +398,7 @@ void RBTree::insert_case5(rbtree t, node n)
 /*
 * Delete Node from RBTree
 */
-void RBTree::rbtree_delete(rbtree t, int key, compare_func compare)
+void RBTree::rbtree_delete(rbtree t, float key, compare_func compare)
 {
 	node child;
 	node n = lookup_node(t, key, compare);
@@ -636,13 +636,14 @@ void RBTree::tournament_helper(node& n) {
 		cout << "   case 4 " << endl;
 	}
 }
+
 /*
 * Compare two nodes
 */
-int compare_int(int leftp, int rightp)
+float compare_int(float leftp, float rightp)
 {
-	int left = (int)leftp;
-	int right = (int)rightp;
+	float left = leftp;
+	float right = rightp;
 	if (left < right)
 		return -1;
 	else if (left > right)
@@ -654,7 +655,7 @@ int compare_int(int leftp, int rightp)
 	}
 }
 
-node* RBTree::dynamic_tournament(rbtree&t, int key, bool first) {
+node* RBTree::dynamic_tournament(rbtree&t, float key, bool first) {
 	node* p_leaf;
 	node * ancestor = NULL;
 	RBTree rbt;
@@ -709,7 +710,7 @@ node* RBTree::clear_to_leaf(rbtree &t, node n) {
 
 }
 
-void RBTree::re_tournament(rbtree &t, node &p_leaf, int new_y) {
+void RBTree::re_tournament(rbtree &t, node &p_leaf, float new_y) {
 	cout << " \n ========================================== \n returned : " << (int)(p_leaf)->key << endl;
 
 	while ((p_leaf)->yvalue == CLEAR_Y) {
@@ -771,11 +772,11 @@ void print_tree_helper(node n, int indent)
 		fputs(" ", stdout);
 	if (n->color == BLACK)  
 	{
-		cout << (int)n->key << "                                              ( " << (int)n->key << " , " << (int)n->yvalue << " )" << endl;
+		cout << n->key << "                                              ( " << n->key << " , " << n->yvalue << " )" << endl;
 	}
 	else
 	{
-		cout << "<" << (int)n->key << ">" << "                                              ( " << (int)n->key << " , " << (int)n->yvalue << " )" << endl;
+		cout << "<" << n->key << ">" << "                                              ( " << n->key << " , " << n->yvalue << " )" << endl;
 	}
 	if (n->left != NULL)
 	{
