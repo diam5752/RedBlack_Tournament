@@ -30,10 +30,11 @@ enum color { RED, BLACK };
 typedef struct rbtree_node
 {
 	enum color color;  // xrwma node (kokkino i mavro)
-	float key;
-	float value;
-	float yvalue;
+	float x;
+	float x_dummy;
+	float y;
 	bool maximal;
+	float is_dummy;
 	vector<rbtree_node> path;
 	rbtree_node *left, *right, *parent;
 }*node;
@@ -49,7 +50,7 @@ class RBTree
 public:
 	typedef float(*compare_func)(float left, float right);
 	rbtree rbtree_create();
-	int rbtree_lookup(rbtree t, float, compare_func compare);
+	float rbtree_lookup(rbtree t, float, compare_func compare);
 	void rbtree_insert(rbtree t, float, float, float, compare_func compare);
 	void rbtree_delete(rbtree t, float, compare_func compare);
 	node grandparent(node n);
@@ -62,7 +63,7 @@ public:
 	void verify_property_4(node root);
 	void verify_property_5(node root);
 	void verify_property_5_helper(node n, int, int*);
-	node new_node(float key, float, float, color, node, node);
+	node new_node(float x, float, float, color, node, node);
 	node lookup_node(rbtree t, float, compare_func compare);
 	void rotate_left(rbtree t, node n);
 	void rotate_right(rbtree t, node n);
