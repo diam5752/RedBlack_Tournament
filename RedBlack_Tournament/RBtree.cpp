@@ -604,11 +604,16 @@ void RBTree::tournament_helper(node& n) {
 	if (n->y >= n->parent->right->y && n->parent != NULL) {
 		n->parent->y = n->y;
 
-		if ( n->parent->is_dummy == 1 ) {
-			n->parent->x_dummy = n->x;
-			cout << "      parent dummy ->  " << n->x << "   ";
-		}
+		if ( n->parent->is_dummy != -1 ) {
+			if ( n->left ==NULL && n->right ==NULL ) {
+				n->parent->x_dummy = n->x;
+			}
+			else {
+				n->parent->x_dummy = n->x_dummy;
+			}
 
+			cout << "      parent dummy ->  " << n->x << "   " << endl;;
+		}
 
 		if (n->left != NULL && (n->y == n->left->y)) {
 			n->path.push_back(*n);
@@ -778,11 +783,11 @@ void print_tree_helper(node n, int indent)
 		fputs(" ", stdout);
 	if (n->color == BLACK)  
 	{
-		cout << n->x << "                                              ( " << n->x << " , " << n->y << " )" << endl;
+		cout << n->x << "                                              ( " << n->x << " , " << n->y << " )   dummmy x -> "<< n->x_dummy << endl;
 	}
 	else
 	{
-		cout << "<" << n->x << ">" << "                                              ( " << n->x << " , " << n->y << " )" << endl;
+		cout << "<" << n->x << ">" << "                                              ( " << n->x << " , " << n->y << " )  dummy x -> "<< n->x_dummy << endl;
 	}
 	if (n->left != NULL)
 	{
