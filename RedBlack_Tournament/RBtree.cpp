@@ -806,76 +806,140 @@ void print_tree(rbtree& t)
 	cout << " ========================================================== " << endl;
 }
 
-void find_maxima(vector<node*> &v) {  // vriskw ta maxima apo array pou pairnei ws oris,a
+//void find_maxima(vector<node*> &v) {  // vriskw ta maxima apo array pou pairnei ws oris,a
+//
+//	cout << " item with biggest x : " << (*(v.front()))->x << endl;
+//
+//	vector<node*> v_max; // tha krataei ta maximal simeia
+//
+//	int v_size = v.size();
+//	cout << "**************************************************************" << endl;
+//	for (int i = 0; i < v_size; i++) {
+//		int max_desc = 0; // an o ginei iso me ton arithmo twn komvwn, tote einai maximal to node pou koitame
+//		cout << "--------------------------------------------------" << endl;
+//		cout << "v[" << i << "]  = " << (*v[i])->x << endl; // ektipwsi pou mas voithaei na tsekaroume an einai swsta ta apotelesmata
+//
+//		for (int j = 0; j < v_size; j++) {  //ksekinaw ti diadikasia elegxou gia maxima. Arxika auti einai i kaki veltiwsi , kai tha 
+//											// veltiwthei me xrisi partial queue with attrition
+//
+//			cout << " x = " << (*v[j])->x << "    y = " << (*v[j])->y << endl;
+//			if (((*v[i])->x >= (*v[j])->x) || (((*v[i])->y) >= (*v[j])->y)) {
+//				max_desc++;
+//			}
+//			else { max_desc = 0; }
+//		}
+//		cout << "                                               max_desc = " << max_desc << endl; // an max_desc isoutai me to megethos tis 
+//																								  // v tote einai maxima to simeio
+//		if (max_desc == v.size()) {  // an simvainei auto to simeio einai maxima , kai ara allazoume tin metavliti tou maximal se 1  
+//			(*(v[i]))->maximal = 1;
+//			v_max.push_back(v[i]); // o v_max krataei ta maxima simeia 
+//		}
+//	}
+//
+//	cout << "**************************************************************" << endl;
+//	for (std::vector<node *>::iterator it = v_max.begin(); it != v_max.end(); ++it)
+//	{
+//		std::cout << ' ' << (*(*it))->x << " with n->maximal x_dummy = " << (*(*it))->maximal << endl;  // ektipwnoume ta maxima	
+//																										// gia na doume an einai swsta ta apotelesmata
+//	}
+//}
+//
+//void Rmax(rbtree &t) {
+//
+//	cout << " -------------------  IN Rmax ------------------- " << endl;
+//
+//	cout << " root = " << t->root->x << endl;
+//	node* p_leaf = &(t->root);  // pointer pou deixnei stin thesi mnimis tis korifis  tou dentrou. Sto telos tha deixnei sto leaf apo to
+//								// opoio pire to y i riza tou dentrou
+//	vector<node*> v;  // vector pou tha krataei ta Rmax . Ta deksia kremamena diladi, apo to winning path
+//
+//	while ((*p_leaf)->y == t->root->y) {   // arxika mono gia to paradeigma pou exw. Thelei genikopoiisi
+//		cout << "p_leaf = " << (*p_leaf)->x << endl;
+//
+//		if ((*p_leaf)->right != NULL && (*p_leaf)->right->y != t->root->y) {
+//			v.push_back(&(*p_leaf)->right);
+//		}
+//
+//		if ((*p_leaf)->left != NULL) {
+//			*p_leaf = (*p_leaf)->left;
+//		}
+//		else {
+//			break;
+//		}
+//	}
+//	for (std::vector<node *>::iterator it = v.begin(); it != v.end(); ++it)
+//	{
+//		std::cout << ' ' << (*(*it))->x;  // ektipwnw ta dekisa canditates, ta Rmax tou winning path
+//	}
+//	std::cout << endl;
+//
+//	cout << " LEAF OF ROOT IS ---> " << (*p_leaf)->x << endl;  // tsekarw an o pointer eftase ekei pou ithela, diladi sto leaf
+//																	  // apo opou pire i riza to y tis. O deiktis menei ekei , kai tha mas xreiastei
+//	find_maxima(v);  //stelnw stin sinartisi ton vector me ta Rmax, kai apo auta vriskw poia einai maxima.
+//}
 
-	cout << " item with biggest x : " << (*(v.front()))->x << endl;
+void print_vec(vector<rbtree_node*>& in) {
 
-	vector<node*> v_max; // tha krataei ta maximal simeia
-
-	int v_size = (int)v.size();
-	cout << "**************************************************************" << endl;
-	for (int i = 0; i < v_size; i++) {
-		int max_desc = 0; // an o ginei iso me ton arithmo twn komvwn, tote einai maximal to node pou koitame
-		cout << "--------------------------------------------------" << endl;
-		cout << "v[" << i << "]  = " << (*v[i])->x << endl; // ektipwsi pou mas voithaei na tsekaroume an einai swsta ta apotelesmata
-
-		for (int j = 0; j < v_size; j++) {  //ksekinaw ti diadikasia elegxou gia maxima. Arxika auti einai i kaki veltiwsi , kai tha 
-											// veltiwthei me xrisi partial queue with attrition
-
-			cout << " x = " << (*v[j])->x << "    y = " << (*v[j])->y << endl;
-			if (((*v[i])->x >= (*v[j])->x) || (((*v[i])->y) >= (*v[j])->y)) {
-				max_desc++;
-			}
-			else { max_desc = 0; }
-		}
-		cout << "                                               max_desc = " << max_desc << endl; // an max_desc isoutai me to megethos tis 
-																								  // v tote einai maxima to simeio
-		if (max_desc == v.size()) {  // an simvainei auto to simeio einai maxima , kai ara allazoume tin metavliti tou maximal se 1  
-			(*(v[i]))->maximal = 1;
-			v_max.push_back(v[i]); // o v_max krataei ta maxima simeia 
-		}
+	for (int i = 0; i < in.size(); i++) {
+		cout << " (" << in[i]->x << " , " << in[i]->y<< " ) " << endl;
 	}
 
-	cout << "**************************************************************" << endl;
-	for (std::vector<node *>::iterator it = v_max.begin(); it != v_max.end(); ++it)
-	{
-		std::cout << ' ' << (*(*it))->x << " with n->maximal x_dummy = " << (*(*it))->maximal << endl;  // ektipwnoume ta maxima	
-																										// gia na doume an einai swsta ta apotelesmata
-	}
 }
 
-void Rmax(rbtree &t) {
+void path_to_Rmax( vector<rbtree_node*>& path) {
+	
+	vector < rbtree_node *> Rchild;
+	vector < rbtree_node *> Rmax;
+	vector < rbtree_node * > Maxima;
 
-	cout << " -------------------  IN Rmax ------------------- " << endl;
+	cout << endl << endl << "=========================== path_to_Rmax  ========================== " << endl << endl;
 
-	cout << " root = " << (int)t->root->x << endl;
-	node* p_leaf = &(t->root);  // pointer pou deixnei stin thesi mnimis tis korifis  tou dentrou. Sto telos tha deixnei sto leaf apo to
-								// opoio pire to y i riza tou dentrou
-	vector<node*> v;  // vector pou tha krataei ta Rmax . Ta deksia kremamena diladi, apo to winning path
-
-	while ((*p_leaf)->y == t->root->y) {   // arxika mono gia to paradeigma pou exw. Thelei genikopoiisi
-		cout << "p_leaf = " << (int)(*p_leaf)->x << endl;
-
-		if ((*p_leaf)->right != NULL && (*p_leaf)->right->y != t->root->y) {
-			v.push_back(&(*p_leaf)->right);
-		}
-
-		if ((*p_leaf)->left != NULL) {
-			*p_leaf = (*p_leaf)->left;
+	for (int i = 0; i < path.size(); i++) {
+		
+		if ( path[i]->right != NULL ) {
+			Rchild.push_back( path[i]->right);
 		}
 		else {
-			break;
+			Maxima.push_back( path[i] );
 		}
 	}
-	for (std::vector<node *>::iterator it = v.begin(); it != v.end(); ++it)
-	{
-		std::cout << ' ' << (*(*it))->x;  // ektipwnw ta dekisa canditates, ta Rmax tou winning path
-	}
-	std::cout << endl;
 
-	cout << " LEAF OF ROOT IS ---> " << (int)(*p_leaf)->x << endl;  // tsekarw an o pointer eftase ekei pou ithela, diladi sto leaf
-																	  // apo opou pire i riza to y tis. O deiktis menei ekei , kai tha mas xreiastei
-	find_maxima(v);  //stelnw stin sinartisi ton vector me ta Rmax, kai apo auta vriskw poia einai maxima.
+	cout << endl << " -----------  path -------------------- " << endl << endl;
+	print_vec(path);
+	
+	cout << endl << " ------------ Rchild ------------ " << endl << endl;
+	print_vec(Rchild);
+
+	cout << endl << " ------------ Rmax ------------ " << endl << endl;
+	print_vec(Maxima);
+
+	
+}
+
+void Rmax(rbtree &t) {  //change name to Rmax initializer
+
+	cout << "==================== Rmax ============================" << endl;
+
+	cout << " root is : ( " << t->root->x << " , " << t->root->y << ")  " << endl;
+	
+	vector < rbtree_node* >  root_path;
+	rbtree_node * parser = t->root;
+
+	root_path.push_back( t->root );
+
+	while ( parser->left != NULL && parser->right != NULL ) {
+	
+		if (  parser->left->y == parser->y ) {
+			parser = parser->left;
+			root_path.push_back(parser);
+		}
+		else {
+			parser = parser->right;
+			root_path.push_back(parser);
+		}
+	}
+
+	path_to_Rmax( root_path);
 }
 
 float compare_int(float leftp, float rightp);
