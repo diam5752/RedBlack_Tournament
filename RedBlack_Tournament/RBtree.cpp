@@ -806,6 +806,15 @@ void print_tree(rbtree& t)
 	cout << " ========================================================== " << endl;
 }
 
+void print_vec(vector<rbtree_node*>& in) {
+
+	for (int i = 0; i < in.size(); i++) {
+		cout << " (" << in[i]->x << " , " << in[i]->y << " ) " << endl;
+	}
+
+}
+
+
 //void find_maxima(vector<node*> &v) {  // vriskw ta maxima apo array pou pairnei ws oris,a
 //
 //	cout << " item with biggest x : " << (*(v.front()))->x << endl;
@@ -878,12 +887,44 @@ void print_tree(rbtree& t)
 //	find_maxima(v);  //stelnw stin sinartisi ton vector me ta Rmax, kai apo auta vriskw poia einai maxima.
 //}
 
-void print_vec(vector<rbtree_node*>& in) {
+vector<rbtree_node*> maxima_in_vector(vector<rbtree_node*>& Rchild) {
 
-	for (int i = 0; i < in.size(); i++) {
-		cout << " (" << in[i]->x << " , " << in[i]->y<< " ) " << endl;
+	cout << endl << endl << "=========================== maxima_in_vector  ========================== " << endl << endl;
+	vector<rbtree_node*> Rmax;
+
+	
+	std::reverse(Rchild.begin(), Rchild.end());
+
+	cout << endl << " ------------ Rchild edited ------------ " << endl << endl;
+	print_vec(Rchild);
+
+
+	for (int i = 0; i < Rchild.size(); i++ ) {  // loop inside the array comparing to find the maxima
+		
+		Rchild[i]->maximal = 1;
+
+		for (int j = i+1 ; j < Rchild.size()  ; j++ ) {
+			cout << "  (" << Rchild[i]->x << " , " << Rchild[i]->y << " )   <-----> " ;
+			cout << "  (" << Rchild[j]->x << " , " << Rchild[j]->y << " )    " << endl;
+			if (  (Rchild[i]->x  <= Rchild[j]->x) && (Rchild[i]->y <= Rchild[j]->y)  ) {
+				Rchild[i]->maximal = 0;
+			}
+		
+		}
+
 	}
 
+	for (int i = 0; i < Rchild.size(); i ++ ) {
+		
+		if ( Rchild[i]->maximal ==1 ) {
+			cout << "------------>   (" << Rchild[i]->x <<" , "<< Rchild[i]->y << " )    maxima"<< endl;
+			Rmax.push_back(Rchild[i]);
+		}
+	}
+
+	print_vec(Rmax);
+
+	return Rmax;
 }
 
 void path_to_Rmax( vector<rbtree_node*>& path) {
@@ -913,6 +954,7 @@ void path_to_Rmax( vector<rbtree_node*>& path) {
 	cout << endl << " ------------ Rmax ------------ " << endl << endl;
 	print_vec(Maxima);
 
+	maxima_in_vector( Rchild );
 	
 }
 
