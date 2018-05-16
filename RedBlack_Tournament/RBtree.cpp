@@ -895,8 +895,8 @@ vector<rbtree_node*> maxima_in_vector(vector<rbtree_node*>& Rchild) {
 	
 	std::reverse(Rchild.begin(), Rchild.end());
 
-	cout << endl << " ------------ Rchild edited ------------ " << endl << endl;
-	print_vec(Rchild);
+	//cout << endl << " ------------ Rchild edited ------------ " << endl << endl;
+	//print_vec(Rchild);
 
 
 	for (int i = 0; i < Rchild.size(); i++ ) {  // loop inside the array comparing to find the maxima
@@ -904,8 +904,7 @@ vector<rbtree_node*> maxima_in_vector(vector<rbtree_node*>& Rchild) {
 		Rchild[i]->maximal = 1;
 
 		for (int j = i+1 ; j < Rchild.size()  ; j++ ) {
-			cout << "  (" << Rchild[i]->x << " , " << Rchild[i]->y << " )   <-----> " ;
-			cout << "  (" << Rchild[j]->x << " , " << Rchild[j]->y << " )    " << endl;
+
 			if (  (Rchild[i]->x  <= Rchild[j]->x) && (Rchild[i]->y <= Rchild[j]->y)  ) {
 				Rchild[i]->maximal = 0;
 			}
@@ -917,32 +916,91 @@ vector<rbtree_node*> maxima_in_vector(vector<rbtree_node*>& Rchild) {
 	for (int i = 0; i < Rchild.size(); i ++ ) {
 		
 		if ( Rchild[i]->maximal ==1 ) {
-			cout << "------------>   (" << Rchild[i]->x <<" , "<< Rchild[i]->y << " )    maxima"<< endl;
 			Rmax.push_back(Rchild[i]);
 		}
 	}
 
-	print_vec(Rmax);
 
 	return Rmax;
 }
 
-void path_to_Rmax( vector<rbtree_node*>& path) {
+
+void recursion_for_Rmax( rbtree_node* Rchild, vector<rbtree_node*>& Maximal) {
+
+	vector<rbtree_node*> node_path , Rchild_Vec;
+
+	cout << " ==============  RECURSION =============" << endl;
+	cout << Rchild->x << " , " << Rchild->y << "   , " << Rchild->x_dummy << endl;
+
+
+	if (Rchild->left != NULL && Rchild->right != NULL ) {
+		while (Rchild->left != NULL && Rchild->right != NULL) {
+
+			if (Rchild->left->y == Rchild->y) {
+				Rchild = Rchild->left;
+				node_path.push_back(Rchild);
+			}
+			else {
+				Rchild = Rchild->right;
+				node_path.push_back(Rchild);
+			}
+		}
+	}
+	else {
+		if ( Rchild->x_dummy != -1) {
+			Maximal.push_back(Rchild);
+		}
+		return;
+	}
+
+	for (int i = 0; i < node_path.size(); i++) {
+
+		cout << " path[" << i << "]  ->   ( " << node_path[i]->x << " , " << node_path[i]->y << " )  with dummy :" << node_path[i]->x_dummy << endl;
+
+		if ( (node_path[i]->right != NULL && (node_path[i]->right->x_dummy == -1 && node_path[i]->x_dummy != node_path[i]->right->x) ) && (node_path[i]->x_dummy != node_path[i]->right->x_dummy) ) {
+			Rchild_Vec.push_back(node_path[i]->right);
+		}
+		else {
+			if ( node_path[i]->x_dummy != -1 ) {
+				Maximal.push_back(node_path[i]);
+			}
+		}
+	}
+
+	cout << " ---- Rchild_Vec " << endl;
+	print_vec(Rchild_Vec);
+	cout << " ---- Maximal " << endl;
+	print_vec(Maximal);
+	
+	for (int i = 0; i < Rchild_Vec.size(); i++) {
+		recursion_for_Rmax(Rchild_Vec[i] , Maximal);
+	}
+	
+	return;
+}
+
+
+vector<rbtree_node*> path_to_Rmax( vector<rbtree_node*>& path) {
 	
 	vector < rbtree_node *> Rchild;
 	vector < rbtree_node *> Rmax;
-	vector < rbtree_node * > Maxima;
+	vector < rbtree_node * > maxima;
 
 	cout << endl << endl << "=========================== path_to_Rmax  ========================== " << endl << endl;
 
 	for (int i = 0; i < path.size(); i++) {
+
+		cout << " path[" << i << "]  ->   ( " << path[i]->x << " , " << path[i]->y << " )  with dummy :" << path[i]->x_dummy << endl;
 		
-		if ( path[i]->right != NULL ) {
+		if (  (path[i]->right != NULL && path[i]->right->x_dummy != -1 ) && (path[i]->x_dummy != path[i]->right->x_dummy   ) )   {
 			Rchild.push_back( path[i]->right);
 		}
 		else {
-			Maxima.push_back( path[i] );
+			if ( path[i]->x_dummy != -1 ) {
+ 				maxima.push_back(path[i]);
+			}
 		}
+
 	}
 
 	cout << endl << " -----------  path -------------------- " << endl << endl;
@@ -952,11 +1010,21 @@ void path_to_Rmax( vector<rbtree_node*>& path) {
 	print_vec(Rchild);
 
 	cout << endl << " ------------ Rmax ------------ " << endl << endl;
-	print_vec(Maxima);
+	Rmax = maxima_in_vector( Rchild );
 
-	maxima_in_vector( Rchild );
+	for (int i = 0; i < Rmax.size(); i++ ) {
+		cout << " Rmax =>  x: " << Rmax[i]->x << "  y: " << Rmax[i]->y << "   x_dump : " << Rmax[i]->x_dummy << endl;
+	}
 	
+	for (int i = 0; i<Rmax.size(); i++) {
+		recursion_for_Rmax(Rmax[i], maxima);
+	}
+
+	cout << "   ---------------------------------------------------->>>>>  " << endl;
+
+	return maxima;
 }
+
 
 void Rmax(rbtree &t) {  //change name to Rmax initializer
 
@@ -964,7 +1032,7 @@ void Rmax(rbtree &t) {  //change name to Rmax initializer
 
 	cout << " root is : ( " << t->root->x << " , " << t->root->y << ")  " << endl;
 	
-	vector < rbtree_node* >  root_path;
+	vector < rbtree_node* >  root_path , maxima;
 	rbtree_node * parser = t->root;
 
 	root_path.push_back( t->root );
@@ -981,13 +1049,30 @@ void Rmax(rbtree &t) {  //change name to Rmax initializer
 		}
 	}
 
-	path_to_Rmax( root_path);
+	maxima = path_to_Rmax( root_path);
+
+	parser = t->root;
+	while (parser->right != NULL) {
+
+		parser = parser->right;
+		if (parser->right == NULL) {
+			maxima.push_back(parser);
+		}
+
+	}
+	/* find most right child cos its every time a maximal */
+
+
+
+	for (int i = 0; i < maxima.size(); i++) {
+
+		if (maxima[i]->x_dummy != -1) {
+			cout << "                 ( " << maxima[i]->x_dummy << " , " << maxima[i]->y << "  ) " << endl;
+		}
+		else {
+			cout << "                 ( " << maxima[i]->x << " , " << maxima[i]->y << "  ) " << endl;
+		}
+	}
 }
 
 float compare_int(float leftp, float rightp);
-
-
-
-
-
-
