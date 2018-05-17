@@ -164,14 +164,14 @@ node RBTree::new_node(float k, float v, float y, color n_color, node left, node 
 {
 	node result = new rbtree_node;
 	result->x = k;
-	cout << "----------------------------------------------->  result -> x = " << result->x << endl;
+	//cout << "----------------------------------------------->  result -> x = " << result->x << endl;
 	result->x_dummy = v;
-	cout << "----------------------------------------------->  result -> x_dummy = " << result->x_dummy << endl;
+	//cout << "----------------------------------------------->  result -> x_dummy = " << result->x_dummy << endl;
 	result->color = n_color;
 	result->left = left;
 	result->right = right;
 	result->y = y;
-	cout << "----------------------------------------------->  result -> y = " << result->y << endl;
+	//cout << "----------------------------------------------->  result -> y = " << result->y << endl;
 	if (left != NULL)
 		left->parent = result;
 	if (right != NULL)
@@ -887,7 +887,7 @@ void print_vec(vector<rbtree_node*>& in) {
 //	find_maxima(v);  //stelnw stin sinartisi ton vector me ta Rmax, kai apo auta vriskw poia einai maxima.
 //}
 
-vector<rbtree_node*> maxima_in_vector(vector<rbtree_node*>& Rchild) {
+vector<rbtree_node*> maxima_in_vector(vector<rbtree_node*>& Rchild, vector<rbtree_node*>& Maximal) {
 
 	cout << endl << endl << "=========================== maxima_in_vector  ========================== " << endl << endl;
 	vector<rbtree_node*> Rmax;
@@ -916,6 +916,7 @@ vector<rbtree_node*> maxima_in_vector(vector<rbtree_node*>& Rchild) {
 	for (int i = 0; i < Rchild.size(); i ++ ) {
 		
 		if ( Rchild[i]->maximal ==1 ) {
+			Maximal.push_back(Rchild[i]); // check it again
 			Rmax.push_back(Rchild[i]);
 		}
 	}
@@ -1010,7 +1011,7 @@ vector<rbtree_node*> path_to_Rmax( vector<rbtree_node*>& path) {
 	print_vec(Rchild);
 
 	cout << endl << " ------------ Rmax ------------ " << endl << endl;
-	Rmax = maxima_in_vector( Rchild );
+	Rmax = maxima_in_vector( Rchild , maxima);
 
 	for (int i = 0; i < Rmax.size(); i++ ) {
 		cout << " Rmax =>  x: " << Rmax[i]->x << "  y: " << Rmax[i]->y << "   x_dump : " << Rmax[i]->x_dummy << endl;
