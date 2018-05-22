@@ -14,6 +14,7 @@ yMin = -10
 yMax = 10
 yTickUnit = 5
 yGridUnit = 5
+yShowGrid = 1
 AxesColor = clBlue
 GridColor = 0x00FF9999
 ShowLegend = 1

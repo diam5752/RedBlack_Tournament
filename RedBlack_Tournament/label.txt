@@ -1,0 +1,6 @@
+[Label1]
+Placement = 0
+Pos = 33.2833876221498;49.9392971246006
+Text = {\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1033{\\fonttbl{\\f0\\fnil\\fcharset0 Times New Roman;}{\\f1\\fnil Times New Roman;}}\n{\\colortbl ;\\red0\\green255\\blue0;\\red0\\green0\\blue0;}\n\\viewkind4\\uc1\\pard\\cf1\\f0\\fs32\\u9787?\\cf2\\f1\\fs24\\par\n}\n
+BackgroundColor = clNone
+ShowInLegend = 0

@@ -1031,7 +1031,7 @@ vector<rbtree_node*> path_to_Rmax( vector<rbtree_node*>& path) {
 }
 
 
-void Rmax(rbtree &t) {  //change name to Rmax initializer
+vector < rbtree_node* >  Rmax(rbtree &t) {  //change name to Rmax initializer
 
 	cout << "==================== Rmax ============================" << endl;
 
@@ -1093,6 +1093,8 @@ void Rmax(rbtree &t) {  //change name to Rmax initializer
 			cout << "                 ( " << maxima[i]->x << " , " << maxima[i]->y << "  ) " << endl;
 		}
 	}
+
+	return maxima;
 }
 
 float compare_int(float leftp, float rightp);
