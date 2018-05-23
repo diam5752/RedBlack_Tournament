@@ -939,8 +939,14 @@ void recursion_for_Rmax( rbtree_node* Rchild, vector<rbtree_node*>& Maximal) {
 	for (int i = 0; i < node_path.size(); i++) {
 
 		cout << " path[" << i << "]  ->   ( " << node_path[i]->x << " , " << node_path[i]->y << " )  with dummy :" << node_path[i]->x_dummy << endl;
+		if (node_path[i]->right!=NULL) {
+			cout << " right -> " << node_path[i]->right->x <<"  with x_dummy = " << node_path[i]->right->x_dummy << endl;
+		}
 
 		if ( (node_path[i]->right != NULL && (node_path[i]->right->x_dummy == -1 && node_path[i]->x_dummy != node_path[i]->right->x) ) && (node_path[i]->x_dummy != node_path[i]->right->x_dummy) ) {
+			Rchild_Vec.push_back(node_path[i]->right);
+		}
+		else if (node_path[i]->right != NULL && node_path[i]->right->x_dummy != -1) {
 			Rchild_Vec.push_back(node_path[i]->right);
 		}
 		else if (node_path[i]->right == NULL && node_path[i]->left == NULL && node_path[i]->maximal != 1 ) {
@@ -981,12 +987,18 @@ vector<rbtree_node*> path_to_Rmax( vector<rbtree_node*>& path) {
 	for (int i = 0; i < path.size(); i++) {
 
 		std::cout << " path[" << i << "]  ->   ( " << path[i]->x << " , " << path[i]->y << " )  with dummy :" << path[i]->x_dummy << endl;
-		
-		if (  (path[i]->right != NULL && path[i]->right->x_dummy != -1 ) && (path[i]->x_dummy != path[i]->right->x_dummy   ) )   {
+
+ 		if (  (path[i]->right != NULL && path[i]->right->x_dummy != -1 ) && (path[i]->x_dummy != path[i]->right->x_dummy   ) )   {
 			Rchild.push_back( path[i]->right);
 		}
 		else if (path[i]->right != NULL && path[i]->right->right==NULL  && path[i]->right->left == NULL && path[i]->parent->y != path[i]->y) {  //periptwsi pio deksiou paidiou, seed 11
 			Rchild.push_back(path[i]->right);
+		}
+		else if ( path[i]->right != NULL && path[i]->parent!=NULL ) {  // atttention
+			
+			if (path[i]->parent->y != path[i]->y) {
+				Rchild.push_back(path[i]->right);
+			}
 		}
 		else {
 			
@@ -1063,8 +1075,8 @@ vector < rbtree_node* >  Rmax(rbtree &t) {  //change name to Rmax initializer
 
 		parser = parser->right;
 		if (parser->right == NULL && parser->maximal!=1 ) {
-			//parser->maximal = 1;
-			//maxima.push_back(parser);
+			parser->maximal = 1;
+			maxima.push_back(parser);
 		}
 
 	}
