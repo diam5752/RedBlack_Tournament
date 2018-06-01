@@ -2,6 +2,7 @@
 #include "RBtree.h"
 
 using namespace std;
+using std::cout;
 /*
 * Return Grandparent of Node
 */
@@ -909,6 +910,11 @@ void recursion_for_Rmax( rbtree_node* Rchild, vector<rbtree_node*>& Maximal, flo
 	cout << " ==============  RECURSION =============" << endl;
 	cout << Rchild->x << " , " << Rchild->y << "   , " << Rchild->x_dummy << endl;
 
+	if (Rchild->left != NULL && Rchild->right!=NULL  ) {
+		cout << "                                                 ( " << Rchild->x << " , " << Rchild->y << " )   inserted to  maxima   .->maximal = " << Rchild->maximal << endl;
+		Rchild->maximal = 1;
+		Maximal.push_back(Rchild);
+	}
 
 	if (Rchild->left != NULL && Rchild->right != NULL ) {
 		while (Rchild->left != NULL && Rchild->right != NULL) {
@@ -928,7 +934,8 @@ void recursion_for_Rmax( rbtree_node* Rchild, vector<rbtree_node*>& Maximal, flo
 		}
 	}
 	else {
-		if ( (Rchild->x_dummy != -1 || (Rchild->left==NULL && Rchild->right==NULL)) && Rchild->maximal != 1 && Rchild->y >= min_y )  {
+		cout << " MIN Y = " << min_y << endl;
+		if (  Rchild->maximal != 1 && Rchild->y > min_y )  { 
 			cout << "                                                 ( " << Rchild->x << " , " << Rchild->y << " )   inserted to  maxima!   .->maximal = " << Rchild->maximal << endl;
 			Rchild->maximal = 1;
 			Maximal.push_back(Rchild);
@@ -945,35 +952,44 @@ void recursion_for_Rmax( rbtree_node* Rchild, vector<rbtree_node*>& Maximal, flo
 
 		if ( (node_path[i]->right != NULL && (node_path[i]->right->x_dummy == -1 && node_path[i]->x_dummy != node_path[i]->right->x) ) && (node_path[i]->x_dummy != node_path[i]->right->x_dummy) ) {
 			Rchild_Vec.push_back(node_path[i]->right);
+			cout << "                                                               *** to Rchild_Vec " << node_path[i]->right->x << endl;
 		}
-		else if (node_path[i]->right != NULL && node_path[i]->right->x_dummy != -1) {
+		else if (node_path[i]->right != NULL && node_path[i]->right->x_dummy != -1 && node_path[i]->y != node_path[i]->right->y) {
 			Rchild_Vec.push_back(node_path[i]->right);
+			cout << "                                                                ***** to Rchild_Vec " << node_path[i]->right->x << endl;
 		}
-		else if (node_path[i]->right == NULL && node_path[i]->left == NULL && node_path[i]->maximal != 1 ) {
+		else if (node_path[i]->right == NULL && node_path[i]->left == NULL && node_path[i]->maximal != 1 && node_path[i]->parent->y != node_path[i]->y) {
 			node_path[i]->maximal = 1;
 			cout << "                                                 ( " << node_path[i]->x << " , " << node_path[i]->y << " )   inserted to  maxima! .->maximal = " << node_path[i]->maximal << endl;
 			Maximal.push_back(node_path[i]);
 		}
 		else {
-			if ( node_path[i]->x_dummy != -1 && node_path[i]->maximal!=1 && node_path[i]->parent->maximal != 1 ) {
+			if ( node_path[i]->x_dummy != -1 && node_path[i]->maximal!=1 && node_path[i]->parent->maximal != 1  && node_path[i]->parent->y != node_path[i]->y) {
 				node_path[i]->maximal = 1;
-				cout << "                                                 ( " << node_path[i]->x << " , " << node_path[i]->y << " )   inserted to  maxima!    .->maximal = " << node_path[i]->maximal << endl;
+				cout << "                                                 ( " << node_path[i]->x << " , " << node_path[i]->y << " )   inserted to  maxima!!    .->maximal = " << node_path[i]->maximal << endl;
 				Maximal.push_back(node_path[i]);
 			}
 		}
 	}
 
 	
-	cout << " ---- Rchild_Vec " << endl;
+	std::cout << " ---- Rchild_Vec " << endl;
 	print_vec(Rchild_Vec);
 
-	cout << " ---- Maxima in  Rchild_Vec " << endl;
+	std::cout << " ---- Maxima in  Rchild_Vec " << endl;
 	Rchild_Vec = maxima_in_vector(Rchild_Vec, Maximal);
 
 
-	cout << " ---- Maximal " << endl;
+	std::cout << " ---- Maximal " << endl;
 	print_vec(Maximal);
 
+	if (Rchild_Vec.size() != 0) {
+		for (int i = 0; i < Rchild_Vec.size(); i++) {
+			if (Rchild_Vec[i]->y <= min_y) {
+				min_y = Rchild_Vec[i]->y;
+			}
+		}
+	}
 
 	for (int i = 0; i < Rchild_Vec.size(); i++) {
 		recursion_for_Rmax(Rchild_Vec[i] , Maximal , min_y);
@@ -1090,7 +1106,8 @@ vector < rbtree_node* >  Rmax(rbtree &t) {  //change name to Rmax initializer
 		parser = parser->right;
 		if (parser->right == NULL && parser->maximal!=1 ) {
 			parser->maximal = 1;
-			maxima.push_back(parser);
+			//maxima.push_back(parser);
+			//cout << "                                                 ( " << parser->x << " , " << parser->y << " )   inserted to  maxima!    .->maximal = " << parser->maximal << endl;
 		}
 
 	}
