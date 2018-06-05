@@ -879,7 +879,7 @@ vector<rbtree_node*> maxima_in_vector(vector<rbtree_node*>& Rchild, vector<rbtre
 
 		for (int j = i+1 ; j < Rchild.size()  ; j++ ) {
 
-			if (  (Rchild[i]->x  <= Rchild[j]->x) && (Rchild[i]->y <= Rchild[j]->y)  ) {
+			if (  (Rchild[i]->x  < Rchild[j]->x) && (Rchild[i]->y < Rchild[j]->y)  ) {
 				Rchild[i]->maximal = 0;
 			}
 		
@@ -1058,7 +1058,7 @@ vector<rbtree_node*> path_to_Rmax( vector<rbtree_node*>& path) {
 	
 	float min_y = 9999999999;
 	for (int i = 0; i < Rmax.size(); i++) {
-		if (Rmax[i]->y <= min_y) {
+		if (Rmax[i]->y < min_y) {
 			min_y = Rmax[i]->y;
 		}
 	}
