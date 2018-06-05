@@ -1106,7 +1106,7 @@ vector < rbtree_node* >  Rmax(rbtree &t) {  //change name to Rmax initializer
 		parser = parser->right;
 		if (parser->right == NULL && parser->maximal!=1 ) {
 			parser->maximal = 1;
-			//maxima.push_back(parser);
+			maxima.push_back(parser);
 			//cout << "                                                 ( " << parser->x << " , " << parser->y << " )   inserted to  maxima!    .->maximal = " << parser->maximal << endl;
 		}
 
