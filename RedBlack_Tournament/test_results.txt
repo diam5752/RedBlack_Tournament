@@ -1,0 +1,40 @@
+
+*********************************************  TEST  ***************************************************
+
+                                  -> number of experiments :  500                         
+                                  -> number of points :  5000                         
+                                  -> X range :  1000000                         
+                                  -> Y range :  1000000                         
+
+ RB_results = 22.35
+ bruteforce_results = 110468
+ bruteforceOpt_results = 159.156
+
+                                           performance increment %                                                   
+ VS bruteforce Opt= 612.107%
+
+ VS bruteforce = 494168%
+
+========================================================================================================
+
+
+
+*********************************************  TEST  ***************************************************
+
+                                  -> number of experiments :  1000                         
+                                  -> number of points :  1000                         
+                                  -> X range :  1000000                         
+                                  -> Y range :  1000000                         
+
+ RB_results = 14.502
+ bruteforce_results = 4286
+ bruteforceOpt_results = 25.872
+
+                                           performance increment %                                                   
+ VS bruteforce Opt= 78.403%
+
+ VS bruteforce = 29455.4%
+
+========================================================================================================
+
+
