@@ -740,13 +740,13 @@ void RBTree::re_tournament(rbtree &t, node &p_leaf, float new_y) {
 void print_tree_helper(node n, int indent)
 {
 	for (std::vector<rbtree_node>::iterator it = (n->path).begin(); it != (n->path).end(); ++it) {
-		//	cout << "for n = " << (int)n->x << "  path = " << (int)(*it).x << endl;
+			cout << "for n = " << (int)n->x << "  path = " << (int)(*it).x << endl;
 	}
 
 	int i;
 	if (n == NULL)
 	{
-		//fputs("<empty tree>", stdout);
+		fputs("<empty tree>", stdout);
 		return;
 	}
 	if (n->right != NULL)
@@ -754,14 +754,14 @@ void print_tree_helper(node n, int indent)
 		print_tree_helper(n->right, indent + INDENT_STEP);
 	}
 	for (i = 0; i < indent; i++)
-		//fputs(" ", stdout);
+		fputs(" ", stdout);
 	if (n->color == BLACK)  
 	{
-		//cout << n->x << "                                              ( " << n->x << " , " << n->y << " )   dummmy x -> "<< n->x_dummy << endl;
+		cout << n->x << "                                              ( " << n->x << " , " << n->y << " )   dummmy x -> "<< n->x_dummy << endl;
 	}
 	else
 	{
-		//cout << "<" << n->x << ">" << "                                              ( " << n->x << " , " << n->y << " )  dummy x -> "<< n->x_dummy << endl;
+		cout << "<" << n->x << ">" << "                                              ( " << n->x << " , " << n->y << " )  dummy x -> "<< n->x_dummy << endl;
 	}
 	if (n->left != NULL)
 	{
@@ -773,17 +773,17 @@ void print_tree_helper(node n, int indent)
 
 void print_tree(rbtree& t)
 {
-	//cout << " ========================================================== " << endl << endl;
+	cout << " ========================================================== " << endl << endl;
 	print_tree_helper(t->root, 0);
 
-	//puts("");
-	//cout << " ========================================================== " << endl;
+	puts("");
+	cout << " ========================================================== " << endl;
 }
 
 void print_vec(vector<rbtree_node*>& in) {
 
 	for (int i = 0; i < in.size(); i++) {
-	//	cout << " (" << in[i]->x << " , " << in[i]->y << " ) " << endl;
+		cout << " (" << in[i]->x << " , " << in[i]->y << " ) " << endl;
 	}
 
 }
@@ -793,7 +793,6 @@ vector<rbtree_node*> maxima_in_vector(vector<rbtree_node*>& Rchild, vector<rbtre
 
 	//cout << endl << endl << "=========================== maxima_in_vector  ========================== " << endl << endl;
 	vector<rbtree_node*> Rmax;
-
 	
 	std::reverse(Rchild.begin(), Rchild.end());
 
@@ -804,10 +803,10 @@ vector<rbtree_node*> maxima_in_vector(vector<rbtree_node*>& Rchild, vector<rbtre
 	for (int i = 0; i < Rchild.size(); i++ ) {  // loop inside the array comparing to find the maxima
 		
 		Rchild[i]->maximal = 1;
-
+		
 		for (int j = i+1 ; j < Rchild.size()  ; j++ ) {
 
-			if (  (Rchild[i]->x  <= Rchild[j]->x) && (Rchild[i]->y <= Rchild[j]->y)  ) {
+			if (  (Rchild[i]->x  <= Rchild[j]->x) && (Rchild[i]->y <= Rchild[j]->y)   ) {
 				Rchild[i]->maximal = 0;
 			}
 		
@@ -818,8 +817,9 @@ vector<rbtree_node*> maxima_in_vector(vector<rbtree_node*>& Rchild, vector<rbtre
 	for (int i = 0; i < Rchild.size(); i ++ ) {
 		
 		if ( Rchild[i]->maximal ==1  ) {
-			//cout << "                                                 ( " << Rchild[i]->x << " , " << Rchild[i]->y << " )   inserted to  maxima!" << endl;
-			//Maximal.push_back(Rchild[i]); // check it again
+	
+			cout << "                                                 ( " << Rchild[i]->x << " , " << Rchild[i]->y << " )   inserted to  maxima!" << endl;
+			Maximal.push_back(Rchild[i]); // check it again
 			Rchild[i]->maximal = 0;
 			Rmax.push_back(Rchild[i]);
 		}
