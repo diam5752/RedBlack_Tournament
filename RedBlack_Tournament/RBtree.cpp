@@ -513,8 +513,6 @@ void RBTree::delete_case6(rbtree t, node n)
 
 
 
-
-
 void RBTree::tournament(rbtree& t) {
 	/*cout << "root = " << int(t->root->x) << endl;
 	cout << "left = " << int(t->root->left->x) << endl;
@@ -526,12 +524,14 @@ void RBTree::tournament(rbtree& t) {
 
 void RBTree::tournament_helper(node& n) {
 
+	std::cout << " =============== TOURNAMENT ==================" << std::endl;
 	if (n == NULL)
 	{
 		//fputs("<empty tree>", stdout);
 		return;
 	}
 
+	
 	if (n->right != NULL)
 	{
 		tournament_helper(n->right);
@@ -540,10 +540,12 @@ void RBTree::tournament_helper(node& n) {
 	{
 		tournament_helper(n->left);
 	}
-	//cout << " n = " << n->x << "   y = " << n->y;
+	
+	cout << " n = " << n->x << "   y = " << n->y << std::endl;
 	//cout << "                                                                       edw  me n =  "<< (int)n->x <<"   y = " << (int)n->y<< endl;
+
 	if (n->parent == NULL) {
-	//	cout << "   case 0 " << endl;
+		cout << "   case 0 " << endl;
 
 		if (n->left != NULL && (n->y == n->left->y)) {
 			n->path.push_back(*n);
@@ -571,7 +573,7 @@ void RBTree::tournament_helper(node& n) {
 	else if (n->left == NULL && n->right == NULL && n->parent->right == NULL) {
 
 		n->parent->y = n->y;
-	//	cout << "   case 2 " << endl;
+		//cout << "   case 2 " << endl;
 		return;
 	}
 
@@ -586,22 +588,28 @@ void RBTree::tournament_helper(node& n) {
 				n->parent->x_dummy = n->x_dummy;
 			}
 
+		
 		//	cout << "      parent dummy ->  " << n->x << "   " << endl;;
 		}
 
-		if (n->left != NULL && (n->y == n->left->y)) {
-			n->path.push_back(*n);
-			n->path.insert(n->path.end(), n->left->path.begin(), n->left->path.end());
+		if (n->right != NULL && n->y == n->right->y) {
+
+				n->path.push_back(*n);
+				n->path.insert(n->path.end(), n->right->path.begin(), n->right->path.end());
+			
+			//cout << "   case 3a " << endl;
 		}
-		else if (n->right != NULL && n->y == n->right->y) {
-			n->path.push_back(*n);
-			n->path.insert(n->path.end(), n->right->path.begin(), n->right->path.end());
+		else if (n->left != NULL && (n->y == n->left->y)) {
+				
+				n->path.push_back(*n);
+				n->path.insert(n->path.end(), n->left->path.begin(), n->left->path.end());
+			//cout << "   case 3b " << endl;
 		}
 		else if (n->right == NULL && n->left == NULL) {
 			n->path.push_back(*n);
 		}
 
-	//	cout << "   case 3 " << endl;
+		//cout << "   case 3 " << endl;
 	}
 	else {
 		n->parent->y = n->parent->right->y;
@@ -618,7 +626,7 @@ void RBTree::tournament_helper(node& n) {
 			n->path.push_back(*n);
 		}
 
-	//	cout << "   case 4 " << endl;
+		//cout << "   case 4 " << endl;
 	}
 }
 
@@ -702,25 +710,23 @@ void RBTree::re_tournament(rbtree &t, node &p_leaf, float new_y) {
 
 		if ((p_leaf)->left == NULL && (p_leaf)->right == NULL) {  // prwti periptwsi
 			(p_leaf)->y = new_y;
-		//	cout << "first x_dummy =  " << (int)(p_leaf)->y << endl;
+			//cout << "first x_dummy =  " << (int)(p_leaf)->y << endl;
 		}
 		else if ((p_leaf)->left != NULL && (p_leaf)->right == NULL) {
 			(p_leaf)->y = (p_leaf)->left->y;
-		//	cout << "left x_dummy =  " << (p_leaf)->left << endl;    // (int) an dn doulevei
+			//cout << "left x_dummy =  " << (p_leaf)->left << endl;    // (int) an dn doulevei
 		}
 		else if ((p_leaf)->left == NULL && (p_leaf)->right != NULL) {
 			(p_leaf)->y = (p_leaf)->right->y;
-		//	cout << "right x_dummy =  " << (int)(p_leaf)->right->y << endl;
+			//cout << "right x_dummy =  " << (int)(p_leaf)->right->y << endl;
 		}
 		else {
-			if ((int)(p_leaf)->left->y >= (int)(p_leaf)->right->y) {
-
+			if ( (p_leaf)->left->y > (p_leaf)->right->y) {
 				(p_leaf)->y = (p_leaf)->left->y;
 			}
 			else {
 				(p_leaf)->y = (p_leaf)->right->y;
 			}
-
 		}
 		if ((p_leaf)->parent != NULL) {
 		//	cout << " p_leaf  parent = " << (int)(p_leaf)->parent->x << endl;
@@ -739,9 +745,9 @@ void RBTree::re_tournament(rbtree &t, node &p_leaf, float new_y) {
 
 void print_tree_helper(node n, int indent)
 {
-	for (std::vector<rbtree_node>::iterator it = (n->path).begin(); it != (n->path).end(); ++it) {
-			cout << "for n = " << (int)n->x << "  path = " << (int)(*it).x << endl;
-	}
+	//for (std::vector<rbtree_node>::iterator it = (n->path).begin(); it != (n->path).end(); ++it) {
+	//		cout << "for n = " << (int)n->x << "  path = " << (int)(*it).x << endl;
+	//}
 
 	int i;
 	if (n == NULL)
@@ -835,11 +841,11 @@ void recursion_for_Rmax( rbtree_node* Rchild, vector<rbtree_node*>& Maximal, flo
 	vector<rbtree_node*> node_path , Rchild_Vec;
 	node_path = {};
 
-	//cout << " ==============  RECURSION =============" << endl;
-	//cout << Rchild->x << " , " << Rchild->y << "   , " << Rchild->x_dummy << endl;
+	cout << " ==============  RECURSION =============" << endl;
+	cout << Rchild->x << " , " << Rchild->y << "   , " << Rchild->x_dummy << endl;
 
 	if (Rchild->left != NULL && Rchild->right!=NULL  ) {
-	//	cout << "                                                 ( " << Rchild->x << " , " << Rchild->y << " )   inserted to  maxima   .->maximal = " << Rchild->maximal << endl;
+		//cout << "                                                 ( " << Rchild->x << " , " << Rchild->y << " )   inserted to  maxima   .->maximal = " << Rchild->maximal << endl;
 		Rchild->maximal = 1;
 		Maximal.push_back(Rchild);
 	}
@@ -864,7 +870,7 @@ void recursion_for_Rmax( rbtree_node* Rchild, vector<rbtree_node*>& Maximal, flo
 	else {
 		//cout << " MIN Y = " << min_y << endl;
 		if (  Rchild->maximal != 1 && Rchild->y > min_y )  { 
-		//	cout << "                                                 ( " << Rchild->x << " , " << Rchild->y << " )   inserted to  maxima!   .->maximal = " << Rchild->maximal << endl;
+			//cout << "                                                 ( " << Rchild->x << " , " << Rchild->y << " )   inserted to  maxima!   .->maximal = " << Rchild->maximal << endl;
 			Rchild->maximal = 1;
 			Maximal.push_back(Rchild);
 		}
@@ -873,7 +879,7 @@ void recursion_for_Rmax( rbtree_node* Rchild, vector<rbtree_node*>& Maximal, flo
 
 	for (int i = 0; i < node_path.size(); i++) {
 
-		//cout << " path[" << i << "]  ->   ( " << node_path[i]->x << " , " << node_path[i]->y << " )  with dummy :" << node_path[i]->x_dummy << endl;
+		cout << " path[" << i << "]  ->   ( " << node_path[i]->x << " , " << node_path[i]->y << " )  with dummy :" << node_path[i]->x_dummy << endl;
 		if (node_path[i]->right!=NULL) {
 			//cout << " right -> " << node_path[i]->right->x <<"  with x_dummy = " << node_path[i]->right->x_dummy << endl;
 		}
@@ -888,13 +894,13 @@ void recursion_for_Rmax( rbtree_node* Rchild, vector<rbtree_node*>& Maximal, flo
 		}
 		else if (node_path[i]->right == NULL && node_path[i]->left == NULL && node_path[i]->maximal != 1 && node_path[i]->parent->y != node_path[i]->y) {
 			node_path[i]->maximal = 1;
-		//	cout << "                                                 ( " << node_path[i]->x << " , " << node_path[i]->y << " )   inserted to  maxima! .->maximal = " << node_path[i]->maximal << endl;
+			//cout << "                                                 ( " << node_path[i]->x << " , " << node_path[i]->y << " )   inserted to  maxima! .->maximal = " << node_path[i]->maximal << endl;
 			Maximal.push_back(node_path[i]);
 		}
 		else {
 			if ( node_path[i]->x_dummy != -1 && node_path[i]->maximal!=1 && node_path[i]->parent->maximal != 1  && node_path[i]->parent->y != node_path[i]->y) {
 				node_path[i]->maximal = 1;
-		//		cout << "                                                 ( " << node_path[i]->x << " , " << node_path[i]->y << " )   inserted to  maxima!!    .->maximal = " << node_path[i]->maximal << endl;
+			//	cout << "                                                 ( " << node_path[i]->x << " , " << node_path[i]->y << " )   inserted to  maxima!!    .->maximal = " << node_path[i]->maximal << endl;
 				Maximal.push_back(node_path[i]);
 			}
 		}
@@ -933,7 +939,7 @@ vector<rbtree_node*> path_to_Rmax( vector<rbtree_node*>& path) {
 	vector < rbtree_node *> Rmax;
 	vector < rbtree_node * > maxima;
 
-	//std::cout << endl << endl << "=========================== path_to_Rmax  ========================== " << endl << endl;
+	std::cout << endl << endl << "=========================== path_to_Rmax  ========================== " << endl << endl;
 
 	for (int i = 0; i < path.size(); i++) {
 
